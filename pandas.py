@@ -2,62 +2,70 @@ import pandas as pd
 df = pd.read_csv('data/dataset.csv')
 df.head
 df.shape
+df
 
-# Tipos de dados no dataframe
+# Renaming variables
+new_columns_name = ['Age', 'Education', 'Income', 'Sex', 'Profile',
+                    'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'Consumption']
 
+df.columns = new_columns_name
+df
 
-# Manipulando dataframe
+# Changing levels
+df['Sex'] = df['Sex'].replace('Homem', 'Man')
+df['Sex'] = df['Sex'].replace('Mulher', 'Woman')
 
-# Selecionando colunas
-df['Idade']
-df[['Idade', 'Escolaridade']]
+df['Consumption'] = df['Consumption'].replace(['Sim', 'Não'], ['Yes', 'No'])
+df
+# Selecting columns
+df['Age']
+df[['Age', 'Education']]
 
 df.filter(like = 'p')
 
-# Selecionando linhas
+# Selecting rows
 df.loc[4:6, ]
 df.loc[[0, 4, 7], ]
 
-df[df.Idade > 3]
-df[df.Genero == 'Homem']
+df[df.Age > 3]
+df[df.Sex == 'Man']
 
-df[(df.Genero == 'Homem') & (df.Idade > 4)]
+df[(df.Sex == 'Man') & (df.Age > 4)]
 
 
-# Selecionando linhas e colunas
+# Selecting rows and columns
 df.loc[4:6, 'p1':'p6']
-df.loc[4:6, ['Idade', 'Consumo']]
+df.loc[4:6, ['Age', 'Consumption']]
 
-my_filter = df.isin({"Genero": ['Homem'], "Consumo": ['Sim']})
-df[(my_filter.Genero) & (my_filter.Consumo)]
+my_filter = df.isin({"Sex": ['Man'], "Consumption": ['Yes']})
+df[(my_filter.Sex) & (my_filter.Consumption)]
 
 
-# Selecionando linhas e colunas (somente intervalos numericos)
+# Selecting rows and columns (only numbers)
 df.iloc[[3, 8, 10], [2, 5, 6]]
 df.iloc[[3, 8, 10], 0:3]
 
-# Ordenacao
-df.sort_values("Idade")
-df.sort_values("Genero")
-df.sort_values(["Idade", "Genero"])
+# Ordering
+df.sort_values("Age")
+df.sort_values("Sex")
+df.sort_values(["Age", "Sex"])
 
-df.sort_values("Idade", inplace=True) # modifica o dataframe
+df.sort_values("Age", inplace=True) # changes the dataframe
 
-# Ordenacao inversa
-df.sort_values("Idade", ascending=False)
-df.sort_values(["Idade", "p1"], ascending=[False, True])
+# Descending ordering
+df.sort_values("Age", ascending=False)
+df.sort_values(["Age", "p1"], ascending=[False, True])
 
-# Calcular somatório variaveis p
+# Summing by rows
 df.filter(like = 'p').sum(axis = 1)
 
-# Funcoes descritivas
+# Summary functions
 df.filter(like = 'p').sum(axis = 1).mean()
 
 # Group by
-profile_vars = ['Genero', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6']
-df[profile_vars].groupby('Genero').mean()
+profile_vars = ['Sex', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6']
+df[profile_vars].groupby('Sex').mean()
 
-profile_vars2 = ['Genero', 'Consumo', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6']
-df[profile_vars2].groupby(['Genero', 'Consumo']).mean()
-
+profile_vars2 = ['Sex', 'Consumption', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6']
+df[profile_vars2].groupby(['Sex', 'Consumption']).mean()
 
